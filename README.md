@@ -1,36 +1,33 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+I was slightly dissapointed in the theming of existing solutions so I made my own small rss reader for self hosting. This is still a work in progress which I will continue working on when I feel like coding in my free time.
+
 ## Getting Started
 
-First, run the development server:
-
+Make sure the environment variables are initialized in a `.env` file. Afterwards run the following commands:
 ```bash
+# Install required npm packages
+npm install
+
+# Start up the postgres container
+docker compose up -d
+
+# Run the prisma migrations to initialize the database
+npx prisma migrate dev
+
+# Run the dev nextjs server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Currently adding a new feed requires sending a POST request to `http://localhost:3000/api/rss/addChannel` with the following body:
+```json
+{
+    "feedLink": "https://feeds.nos.nl/nosnieuwsalgemeen"
+}
+```
+where the feedLink can by any url that points to a rss schema.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Retrieving / updating the items from the feed can be done by sending a GET request to `http://localhost:3000/api/rss/fetchFeeds`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Once that is done visit http://localhost:3000/ to see the items from the feed.
