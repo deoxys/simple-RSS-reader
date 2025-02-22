@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 type Post = {
   guid: string;
@@ -21,20 +23,34 @@ type Post = {
 };
 
 export default function FullPost({ post }: { post: Post }) {
+  const [dateTime, setDateTime] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    setDateTime(post.pubDate.toLocaleString());
+    setDescription(post.description.replaceAll("h2", "h3"));
+  }, [post.description, post.pubDate]);
+
   return (
     <div className="card bg-base-100 w-[640px] shadow-xl">
       {post.imageUrl ? (
-        <figure>
-          <img src={post.imageUrl} alt="Shoes" width="fit-content" />
+        <figure className="h-90">
+          <Image
+            src={post.imageUrl}
+            alt="Post Image"
+            width={640}
+            height={100}
+            layout="intrinsic"
+          />
         </figure>
       ) : null}
       <div className="card-body">
         <article className="prose">
           <h2>{post.title}</h2>
-          <p>{post.pubDate.toLocaleString()}</p>
+          <p>{dateTime}</p>
           <p
             dangerouslySetInnerHTML={{
-              __html: post.description.replaceAll("h2", "h3"),
+              __html: description,
             }}
           ></p>
         </article>
