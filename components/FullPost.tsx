@@ -27,12 +27,12 @@ export default function FullPost({ post }: { post: Post }) {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    setDateTime(post.pubDate.toLocaleString());
+    setDateTime(new Date(post.pubDate).toLocaleString());
     setDescription(post.description.replaceAll("h2", "h3"));
   }, [post.description, post.pubDate]);
 
   return (
-    <div className="card bg-base-100 w-[640px] shadow-xl">
+    <div className="card rounded-none sm:rounded-xl bg-base-100 sm:w-[640px] shadow-xl">
       {post.imageUrl ? (
         <figure className="h-90">
           <Image
@@ -40,7 +40,6 @@ export default function FullPost({ post }: { post: Post }) {
             alt="Post Image"
             width={640}
             height={100}
-            layout="intrinsic"
           />
         </figure>
       ) : null}
