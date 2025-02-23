@@ -28,6 +28,6 @@ Currently adding a new feed requires sending a POST request to `http://localhost
 ```
 where the feedLink can by any url that points to a rss schema.
 
-Retrieving / updating the items from the feed can be done by sending a GET request to `http://localhost:3000/api/rss/fetchFeeds`.
+Retrieving / updating the items from the feed can be done by sending a GET request to `http://localhost:3000/api/rss/fetchFeeds` or starting up the bullmq scheduler: `npm run schedule:run`.
 
 Once that is done visit http://localhost:3000/ to see the items from the feed.

@@ -12,5 +12,14 @@ services:
     volumes:
       - postgres-data:/var/lib/posgresql/data
 
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - cache:/data
+
 volumes:
   postgres-data:
+  cache:

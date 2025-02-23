@@ -6,10 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "schedule:run": "npx tsx ./server/scheduler/index.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.3.1",
+    "bullmq": "^5.41.5",
+    "ioredis": "^5.5.0",
     "link-preview-js": "^3.0.14",
     "next": "15.1.7",
     "node-html-parser": "^7.0.1",
