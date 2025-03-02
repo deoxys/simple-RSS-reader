@@ -26,11 +26,13 @@ export default async function Home() {
             <div className="card-body prose">
               <h3>{post.title}</h3>
               <div className="card-actions justify-end">
-                <button className="btn btn-primary">Read</button>
                 <Link
+                  className="btn btn-primary"
                   href={`/post/${encodeURIComponent(post.guid)}`}
-                  className="btn btn-secondary"
                 >
+                  Read
+                </Link>
+                <Link href={post.link} className="btn btn-secondary">
                   Open Link
                 </Link>
               </div>
