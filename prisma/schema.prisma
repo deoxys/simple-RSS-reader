@@ -30,6 +30,19 @@ model Item {
   link        String
   pubDate     DateTime
   imageUrl    String?
-  channel     Channel? @relation(fields: [channelId], references: [id])
+  category    String?
+  channel     Channel? @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId   Int?
+}
+
+model Keyword {
+  id    Int         @id @default(autoincrement())
+  type  KeywordType
+  value String
+}
+
+enum KeywordType {
+  Title
+  Content
+  Category
 }

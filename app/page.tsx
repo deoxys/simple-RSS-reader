@@ -1,45 +1,48 @@
-import { unstable_cache } from "next/cache";
+import { Settings } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
-import { prisma } from "@/lib/prisma";
+import NewsFeed from "@/components/NewsFeed";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const getPosts = unstable_cache(
-  async () => {
-    return await prisma.item.findMany({ orderBy: { pubDate: "desc" } });
-  },
-  ["posts"],
-  { revalidate: 3600, tags: ["posts"] }
-);
-
-export default async function Home() {
-  const allPosts = await getPosts();
+export default function Home() {
   return (
-    <div className="grid grid-rows-[1fr] items-center justify-items-center min-h-screen p-4 sm:p-8 pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
-      <main className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 items-center sm:items-start">
-        {allPosts.map((post, key) => (
-          <div key={key} className="card bg-base-100 sm:w-[30em] shadow-xl">
-            {post.imageUrl ? (
-              <figure>
-                <img src={post.imageUrl} alt="Shoes" width="fit-content" />
-              </figure>
-            ) : null}
-            <div className="card-body prose">
-              <h3>{post.title}</h3>
-              <div className="card-actions justify-end">
-                <Link
-                  className="btn btn-primary"
-                  href={`/post/${encodeURIComponent(post.guid)}`}
-                >
-                  Read
-                </Link>
-                <Link href={post.link} className="btn btn-secondary">
-                  Open Link
-                </Link>
-              </div>
+    <main className="container mx-auto py-8 px-4">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">RSS News Feed</h1>
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/settings">
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
+          </Link>
+        </Button>
+      </div>
+      <Suspense fallback={<NewsFeedSkeleton />}>
+        <NewsFeed />
+      </Suspense>
+    </main>
+  );
+}
+
+function NewsFeedSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-lg border bg-card text-card-foreground shadow-sm"
+        >
+          <div className="p-6 space-y-4">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-20 w-full" />
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-4 w-1/4" />
             </div>
           </div>
-        ))}
-      </main>
+        </div>
+      ))}
     </div>
   );
 }
