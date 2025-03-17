@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   return (
-    <main className="container mx-auto py-8 px-4">
+    <main className="container flex flex-col mx-auto py-8 px-4 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">RSS News Feed</h1>
         <Button variant="outline" size="sm" asChild>

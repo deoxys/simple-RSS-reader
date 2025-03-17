@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getFeedItems, getKeywords } from "@/app/actions";
 import ColumnSelector from "@/components/ColumnSelector";
 import NewsCard from "@/components/NewsCard";
+import { AutoRefreshComponent } from "./AutoRefreshComponent";
 
 export interface FilterSettings {
   titleKeywords: Keyword[];
@@ -86,6 +87,26 @@ export default function NewsFeed() {
     return <div>Loading news feeds...</div>;
   }
 
+  if (newsItems.length === 0) {
+    return (
+      <div className="justify-center items-center flex grow">
+        <div className="prose">
+          <h3>No news items have been found</h3>
+          <p>
+            Either the news feeds have not been fetched yet, the filtering with
+            the kewords gives no results, or there are no news feeds saved yet.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const refreshCallback = async () => {
+    const items = await getFeedItems(filterSettings);
+
+    setNewsItems(items);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -95,7 +116,7 @@ export default function NewsFeed() {
           onColumnChange={handleColumnChange}
         />
       </div>
-
+      <AutoRefreshComponent refreshCallback={refreshCallback} />
       <div
         className={`grid ${gridColumnClass} gap-6 place-items-center mx-auto`}
         style={{ maxWidth: columns === 2 ? "64rem" : "100%" }}

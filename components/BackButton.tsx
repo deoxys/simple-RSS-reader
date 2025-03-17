@@ -15,8 +15,9 @@ export default function BackButton({ url, alt }: { url: string; alt: string }) {
     <button
       className="btn btn-circle absolute left-3 top-3 z-10 block"
       title={alt}
+      onClick={clickHander}
     >
-      <FontAwesomeIcon icon={faChevronLeft} size={"xl"} onClick={clickHander} />
+      <FontAwesomeIcon icon={faChevronLeft} size={"xl"} />
     </button>
   );
 }
