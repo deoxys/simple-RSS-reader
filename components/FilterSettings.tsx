@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import {
   addFeed,
+  getFeedItems,
   getFeeds,
   getKeywords,
   removeFeed,
@@ -23,6 +24,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { fetchFeeds } from "@/server/scheduler/jobs/fetchFeeds";
 
 interface FilterSettings {
   titleKeywords: Keyword[];
@@ -218,6 +220,8 @@ export default function FilterSettings() {
 
     setFeeds((prev) => [...prev, feed]);
 
+    fetchFeeds();
+
     toast.message("Feed added", {
       description: `${feed.title} has been successfully added to the feed list.`,
     });
@@ -404,7 +408,7 @@ export default function FilterSettings() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {settings.contentKeywords.length === 0 ? (
+            {feeds.length === 0 ? (
               <p className="text-sm text-muted-foreground">
                 No feeds have been added yet.
               </p>
