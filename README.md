@@ -18,16 +18,16 @@ npx prisma migrate dev
 # Run the dev nextjs server
 npm run dev
 
+# In a seperate terminal run to start a scheduled runner to fetch the items in the feeds every 5 min. 
+npm run schedule:run
+
 ```
 
-Currently adding a new feed requires sending a POST request to `http://localhost:3000/api/rss/addChannel` with the following body:
-```json
-{
-    "feedLink": "https://feeds.nos.nl/nosnieuwsalgemeen"
-}
-```
-where the feedLink can by any url that points to a rss schema.
+# Feeds
 
-Retrieving / updating the items from the feed can be done by sending a GET request to `http://localhost:3000/api/rss/fetchFeeds` or starting up the bullmq scheduler: `npm run schedule:run`.
+Adding a new feed can be done on the settings page in the card titled `Feeds`. If the given url is a correct XML RSS scheme the data will be inserted in the database and the articles will be fetched. When you delete a feed, it and all its related articles will be removed from the database.
 
-Once that is done visit http://localhost:3000/ to see the items from the feed.
+
+# Articles
+
+Once one or more feeds have been added their articles will show up on the main page. These can be filtered with keywords that can be added / removed on the settings page. Adding keywords will hide articles containing that keyword on the main page. If you no longer want to filter based on a specific keyword you can choose to delete that keyword and articles containing that keyword will no longer be hidden. You can add filter keywords to filter on the `Title`, `Content` (Description) or `Category` of the RSS Item. Please note that `Category` is not always used by every RSS provider.
