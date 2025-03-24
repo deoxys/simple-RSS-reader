@@ -1,30 +1,29 @@
-"use client";
+"use client"
 
-import { Channel, Keyword, KeywordType } from "@prisma/client";
-import { X, Plus } from "lucide-react";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { Channel, Keyword, KeywordType } from "@prisma/client"
+import { X, Plus } from "lucide-react"
+import { useState, useEffect } from "react"
+import { toast } from "sonner"
 
 import {
   addFeed,
-  getFeedItems,
   getFeeds,
   getKeywords,
   removeFeed,
   removeKeyword,
   saveKeyword,
-} from "@/app/actions";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from "@/app/actions"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { fetchFeeds } from "@/server/scheduler/jobs/fetchFeeds";
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { fetchFeeds } from "@/server/scheduler/jobs/fetchFeeds"
 
 interface FilterSettings {
   titleKeywords: Keyword[];
@@ -36,51 +35,51 @@ const defaultSettings: FilterSettings = {
   titleKeywords: [],
   contentKeywords: [],
   categoryKeywords: [],
-};
+}
 
 export default function FilterSettings() {
-  const [settings, setSettings] = useState<FilterSettings>(defaultSettings);
+  const [settings, setSettings] = useState<FilterSettings>(defaultSettings)
 
-  const [newTitleKeyword, setNewTitleKeyword] = useState("");
-  const [newContentKeyword, setNewContentKeyword] = useState("");
-  const [newCategoryKeyword, setNewCategoryKeyword] = useState("");
+  const [newTitleKeyword, setNewTitleKeyword] = useState("")
+  const [newContentKeyword, setNewContentKeyword] = useState("")
+  const [newCategoryKeyword, setNewCategoryKeyword] = useState("")
 
-  const [feedURL, setFeedURL] = useState("");
+  const [feedURL, setFeedURL] = useState("")
 
-  const [feeds, setFeeds] = useState<Channel[]>([]);
+  const [feeds, setFeeds] = useState<Channel[]>([])
 
   // Load settings from db on component mount
   useEffect(() => {
     const fetchKeywords = async () => {
-      const keywords = await getKeywords();
+      const keywords = await getKeywords()
       if (keywords.length > 0) {
         const titleKeywords = keywords.filter(
           (item) => item.type === KeywordType.Title
-        );
+        )
         const contentKeywords = keywords.filter(
           (item) => item.type === KeywordType.Content
-        );
+        )
         const categoryKeywords = keywords.filter(
           (item) => item.type === KeywordType.Category
-        );
+        )
 
-        setSettings({ titleKeywords, contentKeywords, categoryKeywords });
+        setSettings({ titleKeywords, contentKeywords, categoryKeywords })
       }
-    };
+    }
 
     const fetchFeeds = async () => {
-      const feeds = await getFeeds();
+      const feeds = await getFeeds()
       if (feeds.length > 0) {
-        setFeeds(feeds);
+        setFeeds(feeds)
       }
-    };
+    }
 
-    fetchKeywords();
-    fetchFeeds();
-  }, []);
+    fetchKeywords()
+    fetchFeeds()
+  }, [])
 
   const addTitleKeyword = async () => {
-    if (!newTitleKeyword.trim()) return;
+    if (!newTitleKeyword.trim()) return
 
     // Check if keyword already exists
     if (
@@ -90,41 +89,41 @@ export default function FilterSettings() {
     ) {
       toast.error("Keyword already exists", {
         description: `"${newTitleKeyword}" is already in your title filters.`,
-      });
-      return;
+      })
+      return
     }
 
     const keyword = await saveKeyword(
       newTitleKeyword.trim().toLowerCase(),
       KeywordType.Title
-    );
+    )
 
     setSettings((prev) => ({
       ...prev,
       titleKeywords: [...prev.titleKeywords, keyword],
-    }));
-    setNewTitleKeyword("");
+    }))
+    setNewTitleKeyword("")
 
     toast.message("Title filter added", {
       description: `Articles with "${newTitleKeyword}" in the title will now be hidden.`,
-    });
-  };
+    })
+  }
 
   const removeTitleKeyword = async (keywordId: number) => {
     setSettings((prev) => ({
       ...prev,
       titleKeywords: prev.titleKeywords.filter((k) => k.id !== keywordId),
-    }));
+    }))
 
-    const keyword = await removeKeyword(keywordId);
+    const keyword = await removeKeyword(keywordId)
 
     toast.success("Title filter removed", {
       description: `Removed "${keyword.value}" from title filters.`,
-    });
-  };
+    })
+  }
 
   const addContentKeyword = async () => {
-    if (!newContentKeyword.trim()) return;
+    if (!newContentKeyword.trim()) return
 
     // Check if keyword already exists
     if (
@@ -134,41 +133,41 @@ export default function FilterSettings() {
     ) {
       toast.error("Keyword already exists", {
         description: `"${newContentKeyword}" is already in your content filters.`,
-      });
-      return;
+      })
+      return
     }
 
     const keyword = await saveKeyword(
       newContentKeyword.trim().toLowerCase(),
       KeywordType.Content
-    );
+    )
 
     setSettings((prev) => ({
       ...prev,
       contentKeywords: [...prev.contentKeywords, keyword],
-    }));
-    setNewContentKeyword("");
+    }))
+    setNewContentKeyword("")
 
     toast.message("Content filter added", {
       description: `Articles with "${newContentKeyword}" in the content will now be hidden.`,
-    });
-  };
+    })
+  }
 
   const removeContentKeyword = async (keywordId: number) => {
     setSettings((prev) => ({
       ...prev,
       contentKeywords: prev.contentKeywords.filter((k) => k.id !== keywordId),
-    }));
+    }))
 
-    const keyword = await removeKeyword(keywordId);
+    const keyword = await removeKeyword(keywordId)
 
     toast.message("Content filter removed", {
       description: `Removed "${keyword.value}" from content filters.`,
-    });
-  };
+    })
+  }
 
   const addCategoryKeyword = async () => {
-    if (!newCategoryKeyword.trim()) return;
+    if (!newCategoryKeyword.trim()) return
 
     // Check if keyword already exists
     if (
@@ -178,64 +177,64 @@ export default function FilterSettings() {
     ) {
       toast.error("Keyword already exists", {
         description: `"${newCategoryKeyword}" is already in your category filters.`,
-      });
-      return;
+      })
+      return
     }
 
     const keyword = await saveKeyword(
       newCategoryKeyword.trim().toLowerCase(),
       KeywordType.Category
-    );
+    )
 
     setSettings((prev) => ({
       ...prev,
       categoryKeywords: [...prev.categoryKeywords, keyword],
-    }));
-    setNewCategoryKeyword("");
+    }))
+    setNewCategoryKeyword("")
 
     toast.message("Cateogry filter added", {
       description: `Articles with "${newCategoryKeyword}" in the category will now be hidden.`,
-    });
-  };
+    })
+  }
 
   const removeCategoryKeyword = async (keywordId: number) => {
     setSettings((prev) => ({
       ...prev,
       categoryKeywords: prev.categoryKeywords.filter((k) => k.id !== keywordId),
-    }));
+    }))
 
-    const keyword = await removeKeyword(keywordId);
+    const keyword = await removeKeyword(keywordId)
 
     toast.success("Category filter removed", {
       description: `Removed "${keyword.value}" from category filters.`,
-    });
-  };
+    })
+  }
 
   const addNewFeed = async () => {
-    if (!feedURL.trim()) return;
+    if (!feedURL.trim()) return
 
-    const feed = await addFeed(feedURL);
+    const feed = await addFeed(feedURL)
 
-    setFeedURL("");
+    setFeedURL("")
 
-    setFeeds((prev) => [...prev, feed]);
+    setFeeds((prev) => [...prev, feed])
 
-    fetchFeeds();
+    fetchFeeds()
 
     toast.message("Feed added", {
       description: `${feed.title} has been successfully added to the feed list.`,
-    });
-  };
+    })
+  }
 
   const deleteFeed = async (feedId: number) => {
-    const feed = await removeFeed(feedId);
+    const feed = await removeFeed(feedId)
 
-    setFeeds((prev) => prev.filter((f) => f.id !== feedId));
+    setFeeds((prev) => prev.filter((f) => f.id !== feedId))
 
     toast.message("Feed removed", {
       description: `Removed ${feed.title} from feeds`,
-    });
-  };
+    })
+  }
 
   return (
     <div className="space-y-8">
@@ -430,5 +429,5 @@ export default function FilterSettings() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

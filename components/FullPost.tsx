@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import Image from "next/image"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 
 type Post = {
   guid: string;
@@ -23,13 +23,13 @@ type Post = {
 };
 
 export default function FullPost({ post }: { post: Post }) {
-  const [dateTime, setDateTime] = useState("");
-  const [description, setDescription] = useState("");
+  const [dateTime, setDateTime] = useState("")
+  const [description, setDescription] = useState("")
 
   useEffect(() => {
-    setDateTime(new Date(post.pubDate).toLocaleString());
-    setDescription(post.description.replaceAll("h2", "h3"));
-  }, [post.description, post.pubDate]);
+    setDateTime(new Date(post.pubDate).toLocaleString())
+    setDescription(post.description.replaceAll("h2", "h3"))
+  }, [post.description, post.pubDate])
 
   return (
     <div className="card rounded-none sm:rounded-xl bg-base-100 sm:w-[640px] shadow-xl">
@@ -62,5 +62,5 @@ export default function FullPost({ post }: { post: Post }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

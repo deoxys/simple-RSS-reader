@@ -1,11 +1,12 @@
-"use client";
+"use client"
 
-import { Channel, Item } from "@prisma/client";
-import { Calendar } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
+import { Channel, Item } from "@prisma/client"
+import { Calendar } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useState } from "react"
 
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge"
 import {
   Card,
   CardContent,
@@ -13,16 +14,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
+} from "@/components/ui/card"
 
 interface NewsCardProps {
   item: Item & { channel: Channel | null };
 }
 
 export default function NewsCard({ item }: NewsCardProps) {
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   // Format the publication date
   const formatDate = (date: Date) => {
@@ -32,20 +32,20 @@ export default function NewsCard({ item }: NewsCardProps) {
       year: "numeric",
       hour: "numeric",
       minute: "numeric",
-    }).format(date);
-  };
+    }).format(date)
+  }
 
   // Extract a short excerpt from the content
   const getExcerpt = (content: string, maxLength = 150) => {
     // Remove HTML tags
-    const plainText = content.replace(/<[^>]+>/g, "");
+    const plainText = content.replace(/<[^>]+>/g, "")
 
-    if (plainText.length <= maxLength) return plainText;
+    if (plainText.length <= maxLength) return plainText
 
     // Find the last space before maxLength
-    const lastSpace = plainText.substring(0, maxLength).lastIndexOf(" ");
-    return `${plainText.substring(0, lastSpace)}...`;
-  };
+    const lastSpace = plainText.substring(0, maxLength).lastIndexOf(" ")
+    return `${plainText.substring(0, lastSpace)}...`
+  }
 
   return (
     <Link className="h-full" href={`post/${encodeURIComponent(item.guid)}`}>
@@ -113,5 +113,5 @@ export default function NewsCard({ item }: NewsCardProps) {
         </CardFooter>
       </Card>
     </Link>
-  );
+  )
 }

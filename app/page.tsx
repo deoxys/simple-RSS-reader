@@ -1,10 +1,10 @@
-import { Settings } from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
+import { Settings } from "lucide-react"
+import Link from "next/link"
+import { Suspense } from "react"
 
-import NewsFeed from "@/components/NewsFeed";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import NewsFeed from "@/components/NewsFeed"
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Home() {
   return (
@@ -22,7 +22,7 @@ export default function Home() {
         <NewsFeed />
       </Suspense>
     </main>
-  );
+  )
 }
 
 function NewsFeedSkeleton() {
@@ -44,5 +44,5 @@ function NewsFeedSkeleton() {
         </div>
       ))}
     </div>
-  );
+  )
 }

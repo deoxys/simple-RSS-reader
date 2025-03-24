@@ -1,5 +1,5 @@
 import daisyui from "daisyui"
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
 export default {
     darkMode: ["class"],
@@ -60,8 +60,10 @@ export default {
   	}
   },
   plugins: [
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@tailwindcss/typography"),
     daisyui,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require("tailwindcss-animate")
 ],
-} satisfies Config;
+} satisfies Config

@@ -1,33 +1,35 @@
-import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
-import { toast } from "sonner";
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
+
+import { Button } from "./ui/button"
 
 interface RefreshButtonProps {
   refreshCallback: () => Promise<void>;
 }
 
 export const RefreshButton = ({ refreshCallback }: RefreshButtonProps) => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleRefresh = () => {
-    setIsRefreshing(true);
-  };
+    setIsRefreshing(true)
+  }
 
   useEffect(() => {
     const refreshAction = async () => {
       if (isRefreshing) {
         try {
-          await refreshCallback();
+          await refreshCallback()
         } catch (error) {
-          toast.error("Error while refreshing");
+          console.error(error)
+          toast.error("Error while refreshing")
         } finally {
-          setIsRefreshing(false);
+          setIsRefreshing(false)
         }
       }
-    };
+    }
 
-    refreshAction();
-  }, [isRefreshing]);
+    refreshAction()
+  }, [isRefreshing, refreshCallback])
 
   return (
     <Button disabled={isRefreshing} onClick={handleRefresh}>
@@ -40,5 +42,5 @@ export const RefreshButton = ({ refreshCallback }: RefreshButtonProps) => {
         <>Refresh</>
       )}
     </Button>
-  );
-};
+  )
+}

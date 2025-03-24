@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function parseHtmlEntities(str: string): string {
   return str.replace(/&#([0-9]{1,4});/gi, function(match, numStr) {
-      const num = parseInt(numStr, 10);
-      return String.fromCharCode(num);
-  });
+      const num = parseInt(numStr, 10)
+      return String.fromCharCode(num)
+  })
 }

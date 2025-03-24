@@ -1,9 +1,9 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
+import { ArrowLeft } from "lucide-react"
+import Link from "next/link"
+import { Suspense } from "react"
 
-import FilterSettings from "@/components/FilterSettings";
-import { Button } from "@/components/ui/button";
+import FilterSettings from "@/components/FilterSettings"
+import { Button } from "@/components/ui/button"
 
 export default function SettingsPage() {
   return (
@@ -22,5 +22,5 @@ export default function SettingsPage() {
         <FilterSettings />
       </Suspense>
     </main>
-  );
+  )
 }

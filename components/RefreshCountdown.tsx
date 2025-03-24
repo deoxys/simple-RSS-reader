@@ -4,10 +4,10 @@ interface RefreshCountdownProps {
 }
 
 const parseTimeLeft = (timeLeft: number) => {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = Math.floor(timeLeft % 60);
-  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-};
+  const minutes = Math.floor(timeLeft / 60)
+  const seconds = Math.floor(timeLeft % 60)
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+}
 
 export const RefreshCountdown = ({
   timeLeft,
@@ -19,5 +19,5 @@ export const RefreshCountdown = ({
         ? "Refreshing..."
         : `Refreshing in ${parseTimeLeft(timeLeft)}`}
     </span>
-  );
-};
+  )
+}

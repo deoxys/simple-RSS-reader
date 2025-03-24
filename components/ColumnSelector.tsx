@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { LayoutGrid, Columns, LayoutList } from "lucide-react";
+import { LayoutGrid, Columns, LayoutList } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
 interface ColumnSelectorProps {
   currentColumns: number;
@@ -18,7 +18,7 @@ export default function ColumnSelector({
     { value: 2, icon: <Columns className="h-4 w-4" />, label: "2 Columns" },
     { value: 3, icon: <LayoutGrid className="h-4 w-4" />, label: "3 Columns" },
     { value: 4, icon: <LayoutGrid className="h-4 w-4" />, label: "4 Columns" },
-  ];
+  ]
 
   return (
     <div className="flex space-x-2">
@@ -36,5 +36,5 @@ export default function ColumnSelector({
         </Button>
       ))}
     </div>
-  );
+  )
 }

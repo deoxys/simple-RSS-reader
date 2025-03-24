@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useRouter } from "next/navigation"
 
 export default function BackButton({ url, alt }: { url: string; alt: string }) {
-  const router = useRouter();
+  const router = useRouter()
 
   const clickHander = () => {
-    router.push(url);
-  };
+    router.push(url)
+  }
 
   return (
     <button
@@ -19,5 +19,5 @@ export default function BackButton({ url, alt }: { url: string; alt: string }) {
     >
       <FontAwesomeIcon icon={faChevronLeft} size={"xl"} />
     </button>
-  );
+  )
 }
