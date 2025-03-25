@@ -237,7 +237,7 @@ export default function FilterSettings() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <Card>
         <CardHeader>
           <CardTitle>Title Filters</CardTitle>

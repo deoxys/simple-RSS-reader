@@ -1,27 +1,41 @@
 import { Settings } from "lucide-react"
-import Link from "next/link"
 import { Suspense } from "react"
 
+import FilterSettings from "@/components/FilterSettings"
 import NewsFeed from "@/components/NewsFeed"
 import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Home() {
   return (
-    <main className="container flex flex-col mx-auto py-8 px-4 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">RSS News Feed</h1>
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/settings">
-            <Settings className="h-4 w-4 mr-2" />
-            Settings
-          </Link>
-        </Button>
-      </div>
-      <Suspense fallback={<NewsFeedSkeleton />}>
-        <NewsFeed />
-      </Suspense>
-    </main>
+    <Sheet>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Settings</SheetTitle>
+          <SheetDescription>
+            Here you can adjust and update your settings. These will be persisted over all devices you use to access this webapp.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="py-4">
+          <FilterSettings />
+        </div>
+      </SheetContent>
+      <main className="container flex flex-col mx-auto py-8 px-4 min-h-screen">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">RSS News Feed</h1>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4 mr-2" />
+              Settings
+            </Button>
+          </SheetTrigger>
+        </div>
+        <Suspense fallback={<NewsFeedSkeleton />}>
+          <NewsFeed />
+        </Suspense>
+      </main>
+    </Sheet>
   )
 }
 
