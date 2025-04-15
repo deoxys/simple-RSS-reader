@@ -1,9 +1,11 @@
 import { Settings } from "lucide-react"
 import { Suspense } from "react"
 
-import FilterSettings from "@/components/FilterSettings"
 import NewsFeed from "@/components/NewsFeed"
+import FeedSettings from "@/components/settings/FeedSettings"
+import FilterSettings from "@/components/settings/FilterSettings"
 import { Button } from "@/components/ui/button"
+import { CardTitle } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -17,8 +19,11 @@ export default function Home() {
             Here you can adjust and update your settings. These will be persisted over all devices you use to access this webapp.
           </SheetDescription>
         </SheetHeader>
-        <div className="py-4">
+        <div className="flex flex-col py-4 gap-4">
+          <SheetTitle>Filters</SheetTitle>
           <FilterSettings />
+          <CardTitle>Feeds</CardTitle>
+          <FeedSettings />
         </div>
       </SheetContent>
       <main className="container flex flex-col mx-auto py-8 px-4 min-h-screen">

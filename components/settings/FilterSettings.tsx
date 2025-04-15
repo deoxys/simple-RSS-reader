@@ -1,15 +1,12 @@
 "use client"
 
-import { Channel, Keyword, KeywordType } from "@prisma/client"
+import { Keyword, KeywordType } from "@prisma/client"
 import { X, Plus } from "lucide-react"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
 
 import {
-  addFeed,
-  getFeeds,
   getKeywords,
-  removeFeed,
   removeKeyword,
   saveKeyword,
 } from "@/app/actions"
@@ -23,7 +20,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { fetchFeeds } from "@/server/scheduler/jobs/fetchFeeds"
 
 interface FilterSettings {
   titleKeywords: Keyword[];
@@ -44,10 +40,6 @@ export default function FilterSettings() {
   const [newContentKeyword, setNewContentKeyword] = useState("")
   const [newCategoryKeyword, setNewCategoryKeyword] = useState("")
 
-  const [feedURL, setFeedURL] = useState("")
-
-  const [feeds, setFeeds] = useState<Channel[]>([])
-
   // Load settings from db on component mount
   useEffect(() => {
     const fetchKeywords = async () => {
@@ -67,15 +59,7 @@ export default function FilterSettings() {
       }
     }
 
-    const fetchFeeds = async () => {
-      const feeds = await getFeeds()
-      if (feeds.length > 0) {
-        setFeeds(feeds)
-      }
-    }
-
     fetchKeywords()
-    fetchFeeds()
   }, [])
 
   const addTitleKeyword = async () => {
@@ -207,32 +191,6 @@ export default function FilterSettings() {
 
     toast.success("Category filter removed", {
       description: `Removed "${keyword.value}" from category filters.`,
-    })
-  }
-
-  const addNewFeed = async () => {
-    if (!feedURL.trim()) return
-
-    const feed = await addFeed(feedURL)
-
-    setFeedURL("")
-
-    setFeeds((prev) => [...prev, feed])
-
-    fetchFeeds()
-
-    toast.message("Feed added", {
-      description: `${feed.title} has been successfully added to the feed list.`,
-    })
-  }
-
-  const deleteFeed = async (feedId: number) => {
-    const feed = await removeFeed(feedId)
-
-    setFeeds((prev) => prev.filter((f) => f.id !== feedId))
-
-    toast.message("Feed removed", {
-      description: `Removed ${feed.title} from feeds`,
     })
   }
 
@@ -377,48 +335,6 @@ export default function FilterSettings() {
                     onClick={() => removeCategoryKeyword(keyword.id)}
                     className="ml-2 hover:text-destructive"
                     aria-label={`Remove ${keyword} filter`}
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </Badge>
-              ))
-            )}
-          </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Feeds</CardTitle>
-          <CardDescription>Add feeds to fetch news from.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2 mb-4">
-            <Input
-              placeholder="RSS URL"
-              value={feedURL}
-              onChange={(e) => setFeedURL(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addNewFeed()}
-              className="flex-1"
-            />
-            <Button onClick={addNewFeed}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add
-            </Button>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {feeds.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No feeds have been added yet.
-              </p>
-            ) : (
-              feeds.map((feed) => (
-                <Badge key={feed.id} variant="secondary" className="px-3 py-1">
-                  {feed.title}
-                  <button
-                    onClick={() => deleteFeed(feed.id)}
-                    className="ml-2 hover:text-destructive"
-                    aria-label={`Remove ${feed.title} feed`}
                   >
                     <X className="h-3 w-3" />
                   </button>
