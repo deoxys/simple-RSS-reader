@@ -12,7 +12,7 @@ interface AutoRefreshComponentProps {
 
 export const AutoRefreshComponent = ({
   refreshCallback,
-  interval = 10 * 1000,
+  interval = 5 * 60 * 1000,
 }: AutoRefreshComponentProps) => {
   const [isAutoRefresh, setAutoRefresh] = useState(true)
   const [timeLeft, setTimeLeft] = useState(interval / 1000)
