@@ -260,21 +260,27 @@ export async function getFeeds() {
 
 export async function getFeedItems(
   filter: FilterSettings,
-  cursor?: number
-): Promise<(Item & { channel: Channel | null })[]> {
+  cursor?: string | null,
+  pageSize: number = 25,
+
+): Promise<{
+  items: (Item & { channel: Channel | null })[],
+  nextPageParam: string | null,
+  hasNextPage: boolean,
+}> {
 
   let pagination = {}
 
   if (cursor) {
     pagination = {
       skip: 1,
-      cursor: cursor,
+      cursor: {guid: cursor},
     }
   }
-  
-  return await prisma.item.findMany({
+
+  const items = await prisma.item.findMany({
     ...pagination,
-    take: 100,
+    take: pageSize,
     where: {
       AND: [
         {
@@ -308,4 +314,12 @@ export async function getFeedItems(
       pubDate: "desc",
     },
   })
+
+  const hasNextPage = items.length === pageSize
+    
+  return { 
+    items: items,
+    hasNextPage: hasNextPage,
+    nextPageParam: hasNextPage ? items[pageSize-1].guid : null,
+  }
 }

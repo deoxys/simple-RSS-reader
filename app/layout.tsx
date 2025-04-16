@@ -4,6 +4,8 @@ import "./globals.css"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 import { Toaster } from "sonner"
 
+import Providers from "./providers"
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark min-h-screen`}
       >
-        {children}
+          <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>

@@ -1,7 +1,9 @@
 "use client"
 
-import { Channel, Item, Keyword, KeywordType } from "@prisma/client"
+import { Keyword, KeywordType } from "@prisma/client"
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { useEffect, useState } from "react"
+import { useIntersectionObserver } from 'usehooks-ts'
 
 import { getFeedItems, getKeywords } from "@/app/actions"
 import ColumnSelector from "@/components/ColumnSelector"
@@ -22,14 +24,21 @@ const defaultFilterSettings: FilterSettings = {
 }
 
 export default function NewsFeed() {
-  const [newsItems, setNewsItems] = useState<
-    (Item & { channel: Channel | null })[]
-  >([])
   const [columns, setColumns] = useState(3)
-  const [loading, setLoading] = useState(true)
   const [filterSettings, setFilterSettings] = useState<FilterSettings>(
     defaultFilterSettings
   )
+
+  const {data, error, isLoading, refetch, isSuccess, hasNextPage, fetchNextPage, isFetchingNextPage} = useInfiniteQuery({
+    queryKey: ["newsItems", filterSettings], 
+    queryFn: async ({pageParam}) => await getFeedItems(filterSettings, pageParam),
+    getNextPageParam: (lastPage) => lastPage.nextPageParam,
+    initialPageParam: "",
+  })
+
+  const { isIntersecting, ref } = useIntersectionObserver({
+    threshold: 0.5,
+  })
 
   useEffect(() => {
     // Load column preference from localStorage
@@ -60,16 +69,10 @@ export default function NewsFeed() {
   }, [])
 
   useEffect(() => {
-    // Fetch RSS feeds
-    const loadFeeds = async () => {
-      const items = await getFeedItems(filterSettings)
-
-      setNewsItems(items)
-      setLoading(false)
+    if (isIntersecting && !isLoading) {
+      fetchNextPage()
     }
-
-    loadFeeds()
-  }, [filterSettings])
+  }, [isIntersecting, isLoading, fetchNextPage])
 
   const handleColumnChange = (newColumns: number) => {
     setColumns(newColumns)
@@ -84,11 +87,15 @@ export default function NewsFeed() {
     4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
   }[columns]
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading news feeds...</div>
   }
 
-  if (newsItems.length === 0) {
+  if (!isSuccess) {
+    return <div>{ error?.message }</div>
+  }
+
+  if (data.pages.length === 0) {
     return (
       <div className="justify-center items-center flex grow">
         <div className="prose">
@@ -103,9 +110,7 @@ export default function NewsFeed() {
   }
 
   const refreshCallback = async () => {
-    const items = await getFeedItems(filterSettings)
-
-    setNewsItems(items)
+    refetch()
   }
 
   return (
@@ -117,14 +122,20 @@ export default function NewsFeed() {
           onColumnChange={handleColumnChange}
         />
       </div>
-      <AutoRefreshComponent refreshCallback={refreshCallback} />
+      <AutoRefreshComponent refreshCallback={(refreshCallback)} />
       <div
         className={`grid ${gridColumnClass} gap-6 place-items-center mx-auto`}
         style={{ maxWidth: columns <= 2 ? `${32*columns}rem` : "100%" }}
       >
-        {newsItems.map((item, index) => (
-          <NewsCard key={index} item={item} />
+        {data.pages.map((page) =>
+          page.items.map((item) => 
+            {
+              return <NewsCard key={item.guid} item={item} />
+            }
+          
         ))}
+        {hasNextPage ? <div key="next" ref={ref} /> : null}
+        {isFetchingNextPage ? <div>Loading...</div> : null}
       </div>
     </div>
   )

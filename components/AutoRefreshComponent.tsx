@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 import { RefreshButton } from "./RefreshButton"
 import { RefreshCountdown } from "./RefreshCountdown"
@@ -12,14 +12,14 @@ interface AutoRefreshComponentProps {
 
 export const AutoRefreshComponent = ({
   refreshCallback,
-  interval = 5 * 60 * 1000,
+  interval = 10 * 1000,
 }: AutoRefreshComponentProps) => {
   const [isAutoRefresh, setAutoRefresh] = useState(true)
   const [timeLeft, setTimeLeft] = useState(interval / 1000)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback( async () => {
     setIsRefreshing(true)
     try {
       await refreshCallback()
@@ -28,14 +28,16 @@ export const AutoRefreshComponent = ({
     } finally {
       setIsRefreshing(false)
     }
-  }
+  }, [refreshCallback])
 
+  const tickRef = useRef(false)
+  
   useEffect(() => {
     if (!isAutoRefresh) return
     const countdownInterval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev < 1) {
-          handleRefresh()
+          tickRef.current = true
           return interval / 1000
         }
         return prev - 1
@@ -43,7 +45,14 @@ export const AutoRefreshComponent = ({
     }, 1000)
 
     return () => clearInterval(countdownInterval)
-  })
+  }, [interval, isAutoRefresh])
+
+  useEffect(() => {
+    if (tickRef.current) {
+      tickRef.current = false
+      handleRefresh()
+    }
+  }, [timeLeft, handleRefresh])
 
   return (
     <div className="flex justify-between items-center">
