@@ -120,7 +120,7 @@ export default function NewsFeed() {
       <AutoRefreshComponent refreshCallback={refreshCallback} />
       <div
         className={`grid ${gridColumnClass} gap-6 place-items-center mx-auto`}
-        style={{ maxWidth: columns === 2 ? "64rem" : "100%" }}
+        style={{ maxWidth: columns <= 2 ? `${32*columns}rem` : "100%" }}
       >
         {newsItems.map((item, index) => (
           <NewsCard key={index} item={item} />

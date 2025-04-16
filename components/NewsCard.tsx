@@ -48,7 +48,7 @@ export default function NewsCard({ item }: NewsCardProps) {
   }
 
   return (
-    <Link className="h-full" href={`post/${encodeURIComponent(item.guid)}`}>
+    <Link className="h-full w-full" href={`post/${encodeURIComponent(item.guid)}`}>
       <Card className={`h-full flex flex-col border w-full max-w-lg`}>
         <CardHeader>
           <div className="flex justify-between items-start">
