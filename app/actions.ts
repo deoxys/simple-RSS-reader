@@ -1,9 +1,9 @@
 "use server"
 
-import { Channel, Item, KeywordType } from "@prisma/client"
 import { getLinkPreview } from "link-preview-js"
 import Parser from "rss-parser"
 
+import { Channel, Item, KeywordType } from "@/.prisma/client"
 import { FilterSettings } from "@/components/NewsFeed"
 import { prisma } from "@/lib/prisma"
 import { parseHtmlEntities } from "@/lib/utils"

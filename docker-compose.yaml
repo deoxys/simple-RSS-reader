@@ -20,6 +20,19 @@ services:
     volumes:
       - cache:/data
 
+  app:
+    build:
+      context: .
+      target: ${BUILD_TARGET:-runner}
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}'
+    depends_on:
+      - db
+      - redis
+
 volumes:
   postgres-data:
   cache:

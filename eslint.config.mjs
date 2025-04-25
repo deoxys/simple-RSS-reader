@@ -38,7 +38,8 @@ const eslintConfig = [
           "newlines-between": "always",
         },
       ],
-      "semi": ["error", "never"]
+      "semi": ["error", "never"],
+      "eol-last": ["error", "always"]
     },
   },
 ]

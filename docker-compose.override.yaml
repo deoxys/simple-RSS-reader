@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development

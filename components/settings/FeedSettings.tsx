@@ -1,17 +1,17 @@
 "use client"
 
-import { Channel } from "@prisma/client"
 import { Plus, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+
+import { Channel } from "@/.prisma/client"
+import { addFeed, fetchRssFeeds, getFeeds, removeFeed } from "@/app/actions"
 
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card"
 import { Input } from "../ui/input"
 
-import { addFeed, getFeeds, removeFeed } from "@/app/actions"
-import { fetchFeeds } from "@/server/scheduler/jobs/fetchFeeds"
 
 export default function FeedSettings() {
   const [feedURL, setFeedURL] = useState("")
@@ -38,7 +38,7 @@ export default function FeedSettings() {
 
     setFeeds((prev) => [...prev, feed])
 
-    fetchFeeds()
+    fetchRssFeeds()
 
     toast.message("Feed added", {
       description: `${feed.title} has been successfully added to the feed list.`,

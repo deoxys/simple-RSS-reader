@@ -1,10 +1,10 @@
 "use client"
 
-import { Keyword, KeywordType } from "@prisma/client"
 import { X, Plus } from "lucide-react"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
 
+import { Keyword, KeywordType } from "@/.prisma/client"
 import {
   getKeywords,
   removeKeyword,

@@ -10,7 +10,7 @@ type schedulerType = {
 };
 
 // Redis connection
-export const connection = new Redis('redis://127.0.0.1:6379', {
+export const connection = new Redis('redis://redis:6379', {
   maxRetriesPerRequest: null,
   enableReadyCheck: false,
 })

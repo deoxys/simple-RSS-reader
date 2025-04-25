@@ -17,7 +17,14 @@ const getPost = unstable_cache(
   { revalidate: 3600, tags: ["post"] }
 )
 
-export default async function Post({ params }: { params: { guid: string } }) {
+type PostPageProps = {
+  params: Promise<{
+    guid: string;
+  }>;
+};
+
+export default async function Post({ params }: PostPageProps) {
+
   const decoded = decodeURIComponent((await params).guid)
   const post = await getPost(decoded)
   return (

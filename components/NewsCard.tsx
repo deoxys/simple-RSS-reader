@@ -1,11 +1,11 @@
 "use client"
 
-import { Channel, Item } from "@prisma/client"
 import { Calendar } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
+import { Channel, Item } from "@/.prisma/client"
 import { Badge } from "@/components/ui/badge"
 import {
   Card,

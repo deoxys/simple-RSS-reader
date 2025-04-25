@@ -1,10 +1,10 @@
 "use client"
 
-import { Keyword, KeywordType } from "@prisma/client"
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useEffect, useState } from "react"
 import { useIntersectionObserver } from 'usehooks-ts'
 
+import { Keyword, KeywordType } from "@/.prisma/client"
 import { getFeedItems, getKeywords } from "@/app/actions"
 import ColumnSelector from "@/components/ColumnSelector"
 import NewsCard from "@/components/NewsCard"

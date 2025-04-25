@@ -4,22 +4,10 @@ I was slightly dissapointed in the theming of existing solutions so I made my ow
 
 ## Getting Started
 
-Make sure the environment variables are initialized in a `.env` file. Afterwards run the following commands:
+Make sure the environment variables are initialized in a `.env` file. Afterwards run the following command to star the app:
 ```bash
-# Install required npm packages
-npm install
-
-# Start up the postgres container
-docker compose up -d
-
-# Run the prisma migrations to initialize the database
-npx prisma migrate dev
-
-# Run the dev nextjs server
-npm run dev
-
-# In a seperate terminal run to start a scheduled runner to fetch the items in the feeds every 5 min. 
-npm run schedule:run
+# Build docker image and start up the containers
+docker compose -f docker-compose.yml up --build 
 
 ```
 
